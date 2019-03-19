@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请假表</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="car"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'车辆表',
+			width : 1200,
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'carId',title:'车辆编号',width:80},
+			{field:'carName',title:'车辆名称',width:80},
+			{field:'carPlatenumer',title:'车辆号',width:80},
+			{field:'carState',title:'车辆状态',width:80},
+			{field:'carUser',title:'使用者',width:80},
+			{field:'carPrice',title:'车辆价格',width:80}			
+	     ]],
+	    url:'car.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mywindowcar'
+		}
+		$("#car").datagrid(param);
+	});
+</script>
+  		<div id="mywindowcar"></div>
+		
+  
+</body>
+</html>

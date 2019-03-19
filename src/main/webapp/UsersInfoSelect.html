@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>员工表</title>
+		<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="js/easyui-lang-zh_CN.js" ></script>
+</head>
+<body>
+<table id="users"></table>  
+	<script type="text/javascript"> 
+		$(function(){
+			var param = {
+				title:'员工表',
+				fitColumns:true,
+				columns:[[
+				{field : 'ck',checkbox : true,width : 50},
+				{field:'userId',title:'员工编号',width:80},
+				{field:'roleId',title:'角色编号',width:80},
+				{field:'positionId',title:'职位编号',width:80},
+				{field:'useraccount',title:'员工账号',width:80},
+				{field:'userpwd',title:'员工密码',width:80},
+				{field:'username',title:'员工名字',width:80},
+				{field:'usersex',title:'员工性别',width:80},
+				{field:'superior',title:'上级领导编号',width:80},
+				{field:'userdate',title:'入职时间',width:80},
+				{field:'usersal',title:'员工工资',width:80},
+				{field:'usercard',title:'员工身份证',width:80},
+				{field:'usertel',title:'员工电话',width:80},
+				{field:'useremail',title:'员工邮件',width:80},
+				{field:'useraddress',title:'员工地址',width:80}
+		     ]],
+		     url:'UserInfo.action',
+		 	pagination:true,
+			singleSelect:true,
+			rownumbers:true,
+			pageList:[5,10,15,20],
+			toolbar:'#mytoolsusers'
+			}
+			$("#users").datagrid(param);
+		});
+		function addwindow() {
+			var param = {
+				title : '添加员工信息',
+				width : 300,
+				height : 500,
+				href : 'UsersInfoInsert.jsp'
+			};
+			$("#mywindowusers").window(param);
+		}
+		function editusers() {
+			var trobjs = $("#users").datagrid("getSelections");
+			if (trobjs.length == 0 || trobjs.length > 1) {
+				$.messager.alert('警告', '请选择一条数据，进行编辑');
+				return;
+			} else {
+				var values={ "user_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+				$.post('users/usersselectid',values,function(data){ 
+					var param = {
+						title : '编辑员工信息',
+						width : 400,
+						height : 300,
+						href : 'UsersInfoUpdate.jsp',
+						queryParams : {
+							user_id : data.user_id,
+							role_id : data.role_id,
+							position_id : data.position_id,
+							user_account : data.user_account,
+							user_pwd : data.user_pwd,
+							user_name : data.user_name,
+							user_sex : data.user_sex,
+							superior : data.superior,
+							user_date : data.user_date,
+							user_sal : data.user_sal,
+							user_card : data.user_card,
+							user_tel : data.user_tel,
+							user_email : data.user_email,
+							user_address : data.user_address
+						}
+					};
+					$("#mywindowusers").window(param);
+				},"json");
+			}
+		}
+	 	function delusers() {
+			var trobjs = $("#users").datagrid("getSelections");
+			if (trobjs.length == 0) {
+				$.messager.alert('警告', '请选择一条数据，进行删除');
+				return;
+			} else {
+				$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+				    if (r){    
+				    	var values={ "userId":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+				    	$.post('deleteUser.action',values,function(data2){
+				    		alert(data2); 
+				    	},"text");
+						$("#users").datagrid('load'); 
+				    }    
+				});
+			}
+		} 
+		
+		
+	</script>
+		<div id="mywindowusers"></div>
+		<div id="mytoolsusers">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addwindow()">添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"  onclick="editusers()">编辑</a> 
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"  onclick="delusers()">删除</a>
+		</div>
+
+
+
+</body>
+</html>

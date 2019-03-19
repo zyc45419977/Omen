@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.EmailDao">
+<!-- public int addemail(EmailVo emailvo);
+邮件编号 emailId
+发件人 emailName
+邮件标题 emailHeadline
+邮件内容 emailContent
+收件人 emailRecipients
+	public int updateemail(EmailVo emailvo);
+
+	public int deleteemailById(Integer id);
+
+	public EmailVo queryById(Integer id);
+
+	public List<EmailVo> queryemailByPage(@Param("currpage")int currpage,@Param("pagesize")int pagesize);
+
+	public int queryCount(); -->
+		<insert id="addemail" parameterType="com.guigu.vo.EmailVo">
+		insert into email (emailId,emailName,emailHeadline,emailContent,emailRecipients)
+		 values (#{emailId},#{emailName},#{emailHeadline},#{emailContent},#{emailRecipients})
+	</insert>
+	
+	<select id="queryemailByPage" resultType="com.guigu.vo.EmailVo">
+		select * from email order by emailId limit #{currpage},#{pagesize}
+	</select>
+
+	<select id="queryCount" resultType="Integer">
+		select count(emailId) from email
+	</select>
+	
+	
+	<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.EmailVo">
+		select * from email where emailId =#{emailId}
+	</select>
+	
+	<delete id="deleteemailById" parameterType="int">
+		delete from email where  emailId=#{emailId}
+	</delete>
+	
+	<update id="updateemail" parameterType="com.guigu.vo.EmailVo">
+		update email
+		<set>
+			<if test="emailName!=null">emailName=#{emailName},</if>
+			<if test="emailHeadline!=null">emailHeadline=#{emailHeadline},</if>
+			<if test="emailContent!=null">emailContent=#{emailContent},</if>
+			<if test="emailRecipients!=null">emailRecipients=#{emailRecipients}</if>
+		</set>
+		where emailId=#{emailId}
+	</update>
+</mapper>

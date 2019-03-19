@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.PropertyDao">
+	<!-- public int addzichan(PropertyVo zichan);
+
+	public int updatezichan(PropertyVo zichan);
+
+	public int deletezichanById(Integer id);
+
+	public PropertyVo queryById(Integer id);
+
+	public List<PropertyVo> queryzichanByPage(@Param("currpage")int currpage,@Param("pagesize")int pagesize);
+
+	public int queryCount(); -->
+	
+	<insert id="addzichan" parameterType="com.guigu.vo.PropertyVo">
+		insert into property (prid,prname,price,prdate,propertySults,userid) 
+		values (#{prid},#{prname},#{price},#{prdate},#{propertySults},#{userid})
+	</insert>
+	<select id="queryzichanByPage" resultType="com.guigu.vo.PropertyVo">
+		<!-- select * from property order by prid limit #{currpage},#{pagesize} -->
+		SELECT * FROM userinfo u, property p  WHERE p.userid=u.userId ORDER BY p.prid limit #{currpage},#{pagesize}
+	</select>
+	
+	<select id="queryCount" resultType="Integer">
+		select count(prid) from property
+	</select>
+	
+	
+	<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.PropertyVo">
+		select * from property where prid =#{prid}
+	</select>
+	
+	<delete id="deletezichanById" parameterType="int">
+		delete from property where  prid=#{prid}
+	</delete> 
+	
+	<update id="updatezichan" parameterType="com.guigu.vo.PropertyVo">
+		update property
+		<set>
+			<if test="propertySults!=null">propertySults=#{propertySults}</if>
+		</set>
+		where prid=#{prid}
+	</update>
+</mapper>

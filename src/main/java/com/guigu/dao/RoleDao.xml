@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.RoleDao">
+
+	<!--public int addRole(RoleInfo RoleInfo);-->
+	<insert id="addRole" parameterType="com.guigu.vo.rolesinfoVo">
+		insert into role (roleid,rolename) values (#{roleid},#{rolename})
+	</insert>
+
+	<!--public int updateRole(RoleInfo RoleInfo); -->
+	<update id="updateRole" parameterType="com.guigu.vo.rolesinfoVo">
+		update role
+		<set>
+			<if test="rolename!=null">rolename=#{rolename}</if>
+		</set>
+		where roleid=#{roleid}
+	</update>
+
+	<!--public int deleteRoleById(Integer id); -->
+	<delete id="deleteRoleById" parameterType="int">
+		delete from role where roleId =#{roleId}
+	</delete>
+
+	<!--public RoleInfo queryById(Integer id); -->
+	<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.rolesinfoVo">
+		select * from role where roleId =#{roleId}
+	</select>
+
+	<!--public List<RoleInfo> queryRoleByPage(int currpage,int pagesize); -->
+	<select id="queryRoleByPage" resultType="com.guigu.vo.rolesinfoVo">
+		select * from role order by roleId limit #{currpage},#{pagesize}
+	</select>
+
+	<!-- public int queryCount(); -->
+	<select id="queryCount" resultType="Integer">
+		select count(roleId) from role
+	</select>
+
+	
+	
+</mapper>

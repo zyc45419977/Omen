@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="addroles">
+<div align="center">
+<table>
+	<tr> 
+		<td>角色编号</td> 
+		<td><input type="text" name="roleid" id="roleid"  disabled="disabled"/></td> 
+	</tr> 
+	<tr> 
+		<td>角色名</td> 
+		<td><input type="text" name="rolename" id="rolename"/></td> 
+	</tr>
+</table>
+<input type="button" value="添加" onclick="rolesadd()" />
+</div>
+</form>
+
+<script type="text/javascript">
+function rolesadd(){
+	var values = {
+		"roleid":$("#roleid").val(),
+		"rolename":$("#rolename").val()
+	};
+	$.post('addRole.action',values,function(data){
+		alert(data); 
+	},'text');
+	setTimeout(function(){
+		$("#mywindow2").window('close');
+		$("#roles").datagrid('load'); 
+		},500)
+}
+
+
+
+</script>
+</body>
+</html>

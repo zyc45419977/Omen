@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.MenuDao">
+
+<!-- 	public  List<MenuVo> queryByPid(Integer pid,Integer role_id); -->
+	<select id="queryByPid" resultType="MenuVo">
+<!-- SELECT * FROM menu WHERE id IN(SELECT id FROM MenuRoleInfo WHERE role_id=#{role_id}) AND parentid=#{pid}	 -->
+		<!-- SELECT c.* FROM role a,rome_info b,menu c WHERE 
+		a.roleid=b.role_id AND c.id=b.id AND a.roleid=#{role_id} AND c.parentid=#{pid} -->
+	 	SELECT * FROM menu m WHERE m.id IN  
+	(SELECT mr.id FROM MenuRoleInfo mr WHERE mr.role_Id=#{role_id}) AND m.parentid=#{pid}
+	</select>
+	
+	<select id="quermenu"  resultType="MenuVo">
+		select * from menu where id!=0
+	</select>
+	<!-- public int romeByid(Rome_info rome_info); -->
+<!-- 	public int romeByid(MenuRoleInfoVo menuRoleInfoVo); -->
+	<select id="romeByid" parameterType="com.guigu.vo.MenuRoleInfoVo" resultType="int">
+		select count(*) from MenuRoleInfo where role_Id=#{role_Id}  and id=#{id}
+	</select>
+	<!-- 	public List<MenuVo> queryRoleId(); -->
+	<select id="queryRoleId" resultType="MenuVo">
+	select * from menu;
+	</select>
+	
+	<!-- public int addrome(Rome_info rome_info); -->
+	<insert id="addrome" parameterType="MenuRoleInfoVo">
+INSERT INTO MenuRoleInfo(role_Id,id) VALUES(#{role_Id},#{id})
+	</insert>
+	<!-- public int deleterome(Rome_info rome_info); -->
+	<delete id="deleterome" parameterType="MenuRoleInfoVo">
+		delete from MenuRoleInfo where role_Id=#{role_Id} and id=#{id}
+	</delete>
+	
+	
+</mapper>

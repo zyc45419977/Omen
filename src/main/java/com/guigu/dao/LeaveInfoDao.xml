@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.LeaveInfoDao">
+
+	<!-- public int addLeave(LeaveVo leavevo);
+
+	public int updateLeave(LeaveVo leavevo);
+
+	public int deleteLeaveById(Integer id);
+
+	public LeaveVo queryById(Integer id);
+
+	public List<LeaveVo> queryLeaveByPage(@Param("currpage")int currpage,@Param("pagesize")int pagesize);
+
+	public int queryCount(); -->
+	
+	<insert id="addLeave" parameterType="com.guigu.vo.LeaveVo">
+		insert into leaveInfo (leaveId,leavemanId,leaveContent,startTime,endTime,leavereSults,leadId)
+		 values (#{leaveId},#{leavemanId},#{leaveContent},#{startTime},#{endTime},#{leavereSults},#{leadId})
+	</insert> 
+	<select id="queryLeaveByPage" resultType="com.guigu.vo.LeaveVo">
+		select * from leaveInfo order by leaveId limit #{currpage},#{pagesize}
+	</select>
+
+	<select id="queryCount" resultType="Integer">
+		select count(leaveId) from leaveInfo
+	</select>
+	
+
+	<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.LeaveVo">
+		select * from leaveInfo where leaveId =#{leaveId}
+	</select>
+	
+	<delete id="deleteLeaveById" parameterType="int">
+		delete from leaveInfo where  leaveId=#{leaveId}
+	</delete> 
+	
+
+	<update id="updateLeave" parameterType="com.guigu.vo.LeaveVo">
+		update leaveInfo
+		<set>
+			<if test="leavereSults!=null">leavereSults=#{leavereSults}</if>
+		</set>
+		where leaveId=#{leaveId}
+	</update>
+</mapper>

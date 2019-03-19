@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guigu.dao.LoginDao">
+
+
+	<select id="findusers" resultType="usersvo" parameterType="usersvo" >
+   <!--  select * from userInfo  where useraccount = #{useraccount} and userpwd = #{userpwd} -->
+	  SELECT u.* ,r.* FROM userInfo u, role r WHERE u.roleId =r.roleId AND u.userAccount=#{useraccount} AND u.userPwd=#{userpwd} 
+  	</select>
+
+</mapper>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>角色表</title>
+		<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="js/easyui-lang-zh_CN.js" ></script>
+</head>
+<body>
+
+<table id="roles2"></table>  
+	<script type="text/javascript"> 
+		$(function(){
+			var param = {
+				title:'角色表',
+				fitColumns:true,
+				columns:[[
+				{field : 'ck',checkbox : true,width : 50},
+				{field:'roleid',title:'角色编号',width:80},
+				{field:'rolename',title:'角色名',width:80}
+		     ]],
+		     url:'Role.action',
+		 	pagination:true,
+			singleSelect:true,
+			rownumbers:true,
+			pageList:[5,10,15,20],
+			toolbar:'#mywindow3'
+			}
+			$("#roles2").datagrid(param);
+		});
+
+		
+		
+	</script>
+		<div id="mywindow3"></div>
+		
+
+
+
+</body>
+</html>

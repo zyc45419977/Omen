@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请假表</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="email"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'邮件表',
+			width : 1200,
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'emailId',title:'邮件编号',width:80},
+			{field:'emailName',title:'发件人',width:80},
+			{field:'emailHeadline',title:'邮件标题',width:80},
+			{field:'emailContent',title:'接收人',width:80},
+			{field:'emailRecipients',title:'接收人',width:80}	
+	     ]],
+	    url:'emali.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mytoolemail'
+		}
+		$("#email").datagrid(param);
+	});
+	 function addwindow() {
+		var param = {
+			title : '发送邮件',
+			width : 300,
+			height : 300,
+			href : 'emailInsert.jsp'
+		};
+		$("#mywindowemail").window(param);
+	} 
+	/* function editfiles() {
+		var trobjs = $("#files").datagrid("getSelections");
+		if (trobjs.length == 0 || trobjs.length > 1) {
+			$.messager.alert('警告', '请选择一条数据，进行编辑');
+			return;
+		} else {
+			var param = {
+					title : '添加角色信息',
+					width : 300,
+					height : 300,
+					href : 'filesInfoUpdate.jsp'
+				};
+				$("#mywindowFiles").window(param);
+		 	var values={ "file_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+			$.post('files/filesselectid',values,function(data){ 
+				var param = {
+					title : '编辑公告信息',
+					width : 300,
+					height : 300,
+					href : 'filesInfoUpdate.jsp',
+					queryParams : {
+						file_id : data.file_id,
+						file_date : data.file_date,
+						fine_name : data.fine_name,
+						file_url : data.file_url
+					}
+				};
+				$("#mywindowFiles").window(param);
+			},"json"); 
+		}
+	} */
+ 	function delemail() {
+		var trobjs = $("#email").datagrid("getSelections");
+		if (trobjs.length == 0) {
+			$.messager.alert('警告', '请选择一条数据，进行删除');
+			return;
+		} else {
+			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+			    if (r){    
+			    	var values={ "emailId":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+			    	$.post('deleteemail.action',values,function(data2){
+			    		alert(data2); 
+			    	},"text");
+					setTimeout(function(){
+			    		$("#email").datagrid('reload'); 
+						},500)
+			    }    
+			});
+		}
+	} 
+	
+
+
+</script>
+  		<div id="mywindowemail"></div>
+  		 <div id="mytoolemail">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addwindow()">发送邮件</a>
+		</div> 
+	
+</body>
+</html>

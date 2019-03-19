@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请假表</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="zichan"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'资产表',
+			width : 1200,
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'prid',title:'资产编号',width:80},
+			{field:'prname',title:'资产物品名称',width:80},
+			{field:'price',title:'资产价格',width:80},
+			{field:'prdate',title:'资产时间',width:80},			
+			{field:'userAccount',title:'资产拥有人',width:80},
+			{field:'propertySults',title:'资产状态',width:80},
+			{field:'prsultsgh',title:'资产归还状态',width:80}
+	     ]],
+	    url:'property.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mytoolzichan'
+		}
+		$("#zichan").datagrid(param);
+	});
+	function addwindow() {
+		var param = {
+			title : '资产添加',
+			width : 300,
+			height : 300,
+			href : 'ZichanInfoInsert.jsp'
+		};
+		$("#mywindowzichan").window(param);
+	} 
+	/* function editfiles() {
+		var trobjs = $("#files").datagrid("getSelections");
+		if (trobjs.length == 0 || trobjs.length > 1) {
+			$.messager.alert('警告', '请选择一条数据，进行编辑');
+			return;
+		} else {
+			var param = {
+					title : '添加角色信息',
+					width : 300,
+					height : 300,
+					href : 'filesInfoUpdate.jsp'
+				};
+				$("#mywindowFiles").window(param);
+		 	var values={ "file_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+			$.post('files/filesselectid',values,function(data){ 
+				var param = {
+					title : '编辑公告信息',
+					width : 300,
+					height : 300,
+					href : 'filesInfoUpdate.jsp',
+					queryParams : {
+						file_id : data.file_id,
+						file_date : data.file_date,
+						fine_name : data.fine_name,
+						file_url : data.file_url
+					}
+				};
+				$("#mywindowFiles").window(param);
+			},"json"); 
+		}
+	} */
+	function dekfiles() {
+		var trobjs = $("#zichan").datagrid("getSelections");
+		if (trobjs.length == 0) {
+			$.messager.alert('警告', '请选择一条数据，进行删除');
+			return;
+		} else {
+			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+			    if (r){    
+			    	var values={ "prid":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+			    	$.post('deleteproperty.action',values,function(data2){
+			    		alert(data2); 
+			    	},"text");
+					//$("#positions").datagrid('load'); 
+					$("#zichan").datagrid('reload'); 
+			    }    
+			});
+		}
+	} 
+	
+
+
+</script>
+  		<div id="mywindowzichan"></div>
+		 <div id="mytoolzichan">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addwindow()">资产登记</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="dekfiles()">资产信息删除</a>
+		</div> 
+
+</body>
+</html>

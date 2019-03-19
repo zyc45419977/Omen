@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>角色表</title>
+		<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="js/easyui-lang-zh_CN.js" ></script>
+</head>
+<body>
+
+<table id="roles"></table>  
+	<script type="text/javascript"> 
+		$(function(){
+			var param = {
+				title:'角色表',
+				fitColumns:true,
+				columns:[[
+				{field : 'ck',checkbox : true,width : 50},
+				{field:'roleid',title:'角色编号',width:80},
+				{field:'rolename',title:'角色名',width:80}
+		     ]],
+		     url:'Role.action',
+		 	pagination:true,
+			singleSelect:true,
+			rownumbers:true,
+			pageList:[5,10,15,20],
+			toolbar:'#mytools2'
+			}
+			$("#roles").datagrid(param);
+		});
+		function addwindow() {
+			var param = {
+				title : '添加角色信息',
+				width : 300,
+				height : 500,
+				href : 'RolesInfoInsert.html'
+			};
+			$("#mywindow2").window(param);
+		}
+		function editroles() {
+			var trobjs = $("#roles").datagrid("getSelections");
+			if (trobjs.length == 0 || trobjs.length > 1) {
+				$.messager.alert('警告', '请选择一条数据，进行编辑');
+				return;
+			} else {
+				var values={ "roleid":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+				$.post('queryByIdRole.action',values,function(data){ 
+					var param = {
+						title : '编辑角色信息',
+						width : 400,
+						height : 300,
+						href : 'RolesInfoUpdate.jsp',
+						queryParams : {
+							roleid : data.roleid,
+							rolename : data.rolename
+						}
+					};
+					$("#mywindow2").window(param);
+				},"json");
+			}
+		}
+	 	function delroles() {
+			var trobjs = $("#roles").datagrid("getSelections");
+			if (trobjs.length == 0) {
+				$.messager.alert('警告', '请选择一条数据，进行删除');
+				return;
+			} else {
+				$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+				    if (r){    
+				    	var values={ "roleid":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+				    	$.post('deleteRole.action',values,function(data2){
+				    		alert(data2); 
+				    	},"text");
+						setTimeout(function(){
+							$("#roles").datagrid('load'); 
+						},500)
+				    }    
+				});
+			}
+		} 
+		
+		
+	</script>
+		<div id="mywindow2"></div>
+		<div id="mytools2">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addwindow()">添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"  onclick="editroles()">编辑</a> 
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"  onclick="delroles()">删除</a>
+		</div>
+
+
+
+</body>
+</html>

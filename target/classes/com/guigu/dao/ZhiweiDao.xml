@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.ZhiweiDao">
+<!-- 
+public int addzhiwei(zhiweiVo zhiweivo);
+
+	public int updatezhiwei(zhiweiVo zhiweivo);
+
+	public int deletezhiweiById(Integer id);
+
+	public zhiweiVo queryById(Integer id);
+
+	public List<zhiweiVo> queryzhiweiByPage(@Param("currpage")int currpage,@Param("pagesize")int pagesize);
+
+	public int queryCount1(); -->
+
+	<insert id="addzhiwei" parameterType="com.guigu.vo.zhiweiVo">
+		insert into positions (positionId,positionName,positionPrincipal) values (#{positionId},#{positionName},#{positionPrincipal})
+	</insert>
+	
+	<select id="queryzhiweiByPage" resultType="com.guigu.vo.zhiweiVo">
+		select * from positions order by positionId limit #{currpage},#{pagesize}
+	</select>
+
+	<select id="queryCount1" resultType="Integer">
+		select count(positionId) from positions
+	</select>
+	
+	
+	<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.zhiweiVo">
+		select * from positions where positionId =#{positionId}
+	</select>
+	
+	<delete id="deletezhiweiById" parameterType="int">
+		delete from positions where  positionId=#{positionId}
+	</delete>
+	
+	<update id="updatezhiwei" parameterType="com.guigu.vo.zhiweiVo">
+		update positions
+		<set>
+			<if test="positionName!=null">positionName=#{positionName},</if>
+			<if test="positionPrincipal!=null">positionPrincipal=#{positionPrincipal}</if>
+		</set>
+		where positionId=#{positionId}
+	</update>
+	
+	
+</mapper>

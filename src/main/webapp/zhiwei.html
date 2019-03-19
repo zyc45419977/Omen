@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>职位管理</title>
+	<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="js/easyui-lang-zh_CN.js" ></script>
+</head>
+<body>
+<table id="positions"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'职位表',
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'positionId',title:'职位编号',width:80},
+			{field:'positionName',title:'职位名称',width:80},
+			{field:'positionPrincipal',title:'管理者',width:80}			
+	     ]],
+	    url:'zhiwei.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mytools1'
+		}
+		$("#positions").datagrid(param);
+	});
+	function addwindow() {
+		var param = {
+			title : '添加职位信息',
+			width : 300,
+			height : 300,
+			href : 'PositionsInfoInsert.html'
+		};
+		$("#mywindow1").window(param);
+	}
+	function editposition() {
+		var trobjs = $("#positions").datagrid("getSelections");
+		if (trobjs.length == 0 || trobjs.length > 1) {
+			$.messager.alert('警告', '请选择一条数据，进行编辑');
+			return;
+		} else {
+			var values={ "positionId":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+			$.post('queryByIdzhiwei.action',values,function(data){ 
+				var param = {
+					title : '编辑职位信息',
+					width : 300,
+					height : 300,
+					href : 'PositionsInfoUpdate.jsp',
+					queryParams : {
+						positionId : data.positionId,
+						positionName : data.positionName,
+						positionPrincipal : data.positionPrincipal
+					}
+				};
+				$("#mywindow1").window(param);
+			},"json");
+		}
+	}
+ 	function delposition() {
+		var trobjs = $("#positions").datagrid("getSelections");
+		if (trobjs.length == 0) {
+			$.messager.alert('警告', '请选择一条数据，进行删除');
+			return;
+		} else {
+			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+			    if (r){    
+			    	var values={ "positionId":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+			    	$.post('deletezhiwei.action',values,function(data2){
+			    		alert(data2); 
+			    	},"text");
+			    	setTimeout(function(){
+			    		$("#positions").datagrid('reload'); 
+						},500)
+			
+			    }    
+			});
+		}
+	} 
+	
+
+
+</script>
+
+
+  		<div id="mywindow1"></div>
+
+		<div id="mytools1">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addwindow()">添加职位信息</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"  onclick="editposition()">编辑职位信息</a> 
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"  onclick="delposition()">删除职位信息</a>
+	
+		</div>
+  
+</body>
+</html>

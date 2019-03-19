@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请假表</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="car2"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'车辆表',
+			width : 1200,
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'carId',title:'车辆编号',width:80},
+			{field:'carName',title:'车辆名称',width:80},
+			{field:'carPlatenumer',title:'车辆号',width:80},
+			{field:'carState',title:'车辆状态',width:80},
+			{field:'carUser',title:'使用者',width:80},
+			{field:'carPrice',title:'车辆价格',width:80}			
+	     ]],
+	    url:'car.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mytoolcar2'
+		}
+		$("#car2").datagrid(param);
+	});
+	function editcar() {
+		var trobjs = $("#car2").datagrid("getSelections");
+		if (trobjs.length == 0 || trobjs.length > 1) {
+			$.messager.alert('警告', '请选择一条数据，进行编辑');
+			return;
+		} else {
+		 	var values={ "carId":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+			$.post('queryByIdcar.action',values,function(data){ 
+				var param = {
+					title : '申请车辆信息',
+					width : 300,
+					height : 300,
+					href : 'CarUpdate.jsp',
+					queryParams : {
+						carId : data.carId,
+						carState : data.carState
+					}
+				};
+				$("#mywindowcar2").window(param);
+			},"json"); 
+		}
+	} 
+</script>
+  		<div id="mywindowcar2"></div>
+		 <div id="mytoolcar2">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="editcar()">审批车辆</a>
+		</div> 
+  
+</body>
+</html>

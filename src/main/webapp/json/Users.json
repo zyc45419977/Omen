@@ -1,0 +1,3 @@
+ [
+ {"user_id":1,"role_id":1,"position_id":1,"user_account":"admin","user_pwd":"123","user_name":"666","user_sex":1,"user_date":"Dec 24, 2000 12:00:00 AM","user_sal":5000,"user_card":"2147483647","user_tel":"1234567890","user_email":"123123@qq.om","user_address":"山东省青岛市李沧区高密路55号","user_dates":"2000-12-24"},
+ {"user_id":2,"role_id":2,"position_id":1,"user_account":"king","user_pwd":"123","user_name":"666","user_sex":1,"superior":"1","user_date":"Dec 24, 2000 12:00:00 AM","user_sal":5000,"user_card":"2147483647","user_tel":"1234567890","user_email":"143124332@qq.om","user_address":"山东省青岛市","user_dates":"2000-12-24"} ]

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.CarDao">
+<!-- public int addcar(CarVo carvo);
+
+	public int updatecar(CarVo carvo);
+
+	public int deletecarById(Integer id);
+
+	public CarVo queryById(Integer id);
+
+	public List<CarVo> querycarByPage(@Param("currpage")int currpage,@Param("pagesize")int pagesize);
+
+	public int queryCount();
+ -->
+
+	<insert id="addcar" parameterType="com.guigu.vo.CarVo">
+		insert into car (carId,carName,carPlatenumer,carState,carUser,carPrice) 
+		values (#{carId},#{carName},#{carPlatenumer},#{carState},#{carUser},#{carPrice})
+	</insert>
+	
+	<select id="querycarByPage" resultType="com.guigu.vo.CarVo">
+		select * from car order by carId limit #{currpage},#{pagesize}
+	</select>
+
+	<select id="queryCount" resultType="Integer">
+		select count(carId) from car
+	</select>
+	
+	
+	<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.CarVo">
+		select * from car where carId =#{carId}
+	</select>
+	
+	<delete id="deletecarById" parameterType="int">
+		delete from car where  carId=#{carId}
+	</delete>
+	 <!--   carId INT(22) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  carName VARCHAR(22) DEFAULT NULL ,
+  carPlatenumer VARCHAR(22) UNIQUE DEFAULT NULL ,
+  carState VARCHAR(22) DEFAULT '未使用' ,
+  carUser INT(22) DEFAULT NULL ,
+  carPrice INT(22) DEFAULT NULL  -->
+	<update id="updatecar" parameterType="com.guigu.vo.CarVo">
+		update car
+		<set>
+			<if test="carState!=null">carState=#{carState}</if>
+		</set>
+		where carId=#{carId}
+	</update>
+	
+	
+</mapper>

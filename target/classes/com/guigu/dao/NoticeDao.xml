@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.guigu.dao.NoticeDao">
+
+	<!-- public List<NoticeVo> findNotice(@Param("currpage")int currpage,@Param("pagesize")int pagesize); -->
+		<select id="findNotice" resultType="com.guigu.vo.NoticeVo">
+		select * from notice order by noticeId limit #{currpage},#{pagesize}
+		</select>
+<!-- 	public int addnoticeVo(NoticeVo noticeVo);-->
+
+	<insert id="addnoticeVo" parameterType="com.guigu.vo.NoticeVo">
+		insert into notice 
+		(noticeId,noticename,noticematter,noticeissuer) 
+		values (#{noticeId},#{noticename},#{noticematter},#{noticeissuer})
+	</insert>
+<!-- 	public int updatenoticeVo(NoticeVo noticeVo);
+ -->
+ 	<update id="updatenoticeVo" parameterType="com.guigu.vo.NoticeVo">
+		update notice
+		<set>
+			<if test="noticename!=null">noticename=#{noticename},</if>
+			<if test="noticematter!=null">noticematter=#{noticematter},</if>
+			<if test="noticeissuer!=null">noticeissuer=#{noticeissuer}</if>
+		</set>
+		where noticeId=#{noticeId}
+	</update>
+<!-- 	public int deletenoticeVoById(Integer id);
+ -->
+ 	<delete id="deletenoticeVoById" parameterType="int">
+		delete from notice where  noticeId=#{noticeId}
+	</delete>
+<!-- 	public NoticeVo queryById(Integer id);
+ -->
+<select id="queryById" parameterType="Integer" resultType="com.guigu.vo.NoticeVo">
+		select * from notice where noticeId =#{noticeId}
+	</select>
+<!-- 	public int queryCount(); -->
+	<select id="queryCount" resultType="Integer">
+		select count(noticeId) from notice
+	</select>
+	</mapper>

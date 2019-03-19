@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请假表</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="car"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'考勤表',
+			width : 1200,
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'ad_id',title:'考勤编号',width:80},
+			{field:'ad_name',title:'考勤人员',width:80},
+			{field:'ad_time',title:'考勤开始时间',width:80},
+			{field:'ad_stoptime',title:'考勤结束时间',width:80},
+			{field:'ad_state',title:'考勤状态',width:80}				
+	     ]],
+	    url:'',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mywindowcar'
+		}
+		$("#car").datagrid(param);
+	});
+	function addwindow() {
+		var param = {
+			title : '请假申请',
+			width : 300,
+			height : 300,
+			href : 'leaveInfoInsert.jsp'
+		};
+		$("#mywindowFiles").window(param);
+	}
+	/* function editfiles() {
+		var trobjs = $("#files").datagrid("getSelections");
+		if (trobjs.length == 0 || trobjs.length > 1) {
+			$.messager.alert('警告', '请选择一条数据，进行编辑');
+			return;
+		} else {
+			var param = {
+					title : '添加角色信息',
+					width : 300,
+					height : 300,
+					href : 'filesInfoUpdate.jsp'
+				};
+				$("#mywindowFiles").window(param);
+		 	var values={ "file_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+			$.post('files/filesselectid',values,function(data){ 
+				var param = {
+					title : '编辑公告信息',
+					width : 300,
+					height : 300,
+					href : 'filesInfoUpdate.jsp',
+					queryParams : {
+						file_id : data.file_id,
+						file_date : data.file_date,
+						fine_name : data.fine_name,
+						file_url : data.file_url
+					}
+				};
+				$("#mywindowFiles").window(param);
+			},"json"); 
+		}
+	} */
+ 	function dekfiles() {
+		var trobjs = $("#files").datagrid("getSelections");
+		if (trobjs.length == 0) {
+			$.messager.alert('警告', '请选择一条数据，进行删除');
+			return;
+		} else {
+			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+			    if (r){    
+			    	var values={ "file_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+			    	$.post('files/filesdelete',values,function(data2){
+			    		alert(data2); 
+			    	},"text");
+					//$("#positions").datagrid('load'); 
+					$("#files").datagrid('reload'); 
+			    }    
+			});
+		}
+	} 
+	
+
+
+</script>
+  		<div id="mywindowcar"></div>
+	
+  
+</body>
+</html>

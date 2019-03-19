@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 加载数据库的配置文件 -->
+	<properties resource="jdbc.properties"></properties>
+	
+	<!-- 配置框架的属性 -->
+	<settings>
+		<!-- 配置延迟加载 -->
+		<!-- 打开延迟加载的开关 默认false -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<!-- 设置积极加载或消极加载 默认true -->
+		<setting name="aggressiveLazyLoading" value="false" />
+		<!-- 开启二级缓存 -->
+		<setting name="cacheEnabled" value="true" />
+	</settings>
+
+	
+	<!-- 定义别名 -->
+	<typeAliases>
+		<!-- <typeAlias type="com.yangyang.pojo.AddressInfo" alias="address"/>
+		<typeAlias type="com.yangyang.pojo.ClassInfo" alias="classinfo"/> -->
+		
+		<!-- 批量定义别名 
+		
+		1.默认：别名就是类的简化类名(首字母小写或大写都可以)
+		2.注解的方式设置别名   如果设置了别名的注解，使用注解的
+		
+		-->
+		<package name="com.guigu.vo"/>
+	</typeAliases>
+
+
+	<!-- 和spring整合后 environments配置将废除 -->
+	<environments default="mysql">
+		<environment id="mysql">
+			<!-- 使用jdbc事务管理，事务控制由mybatis -->
+			<transactionManager type="JDBC"></transactionManager>
+			<!-- 数据库连接池，由mybatis管理 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${driverClass}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+
+				<!-- 连接池的信息 -->
+
+			</dataSource>
+		</environment>
+	</environments>
+	<!-- 加载映射文件 -->
+	<mappers>
+		<!-- <mapper resource="com/yangyang/mapper/UserMapper.xml" /> 
+		<mapper resource="com/yangyang/mapper/AddressMapper.xml" 
+			/> <mapper resource="com/yangyang/mapper/ClassMapper.xml" /> -->
+
+		<!-- 批量加载映射文件 -->
+		<package name="com.guigu.dao" />
+	</mappers>
+</configuration>

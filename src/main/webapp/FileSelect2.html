@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文件查询</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="files"></table>
+<script type="text/javascript">
+asd
+$(function(){
+	var param = {
+			title:'文件表',
+			width : 1200,
+			fitColumns:true,
+		/* 	public int fileId;
+			public String fileUrl;
+			public String fineName;
+			public String fineContent;
+			public Date fileDate;
+			public String userName; */
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'fileId',title:'文件编号',width:80},
+			{field:'fileUrl',title:'文件目录',width:80},
+			{field:'fineName',title:'文件标题',width:80},
+			{field:'fineContent',title:'发布内容',width:80},
+			{field:'fileDate',title:'发布时间',width:80},
+			{field:'userName',title:'发布人',width:80}		
+	     ]],
+	    url:'querywj.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mytoolsFiles'
+		}
+		$("#files").datagrid(param);
+	});
+ 	function addwindow() {
+	var param = {
+		title : '添加文件信息',
+		width : 300,
+		height : 300,
+		href : 'filesInfoInser.jsp'
+	};
+	$("#mywindowFiles").window(param);
+} 
+/* function editnotice() {
+	var trobjs = $("#notice").datagrid("getSelections");
+	if (trobjs.length == 0 || trobjs.length > 1) {
+		$.messager.alert('警告', '请选择一条数据，进行编辑');
+		return;
+	} else {
+		var values={ "notice_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text() }
+		$.post('notice/notcieselectid',values,function(data){ 
+			var param = {
+				title : '编辑公告信息',
+				width : 300,
+				height : 300,
+				href : 'NoticeInfoUpdate.jsp',
+				queryParams : {
+					notice_id : data.notice_id,
+					notice_title : data.notice_title,
+					notice_content : data.notice_content,
+					notice_name : data.notice_name
+				}
+			};
+			$("#mywindowFiles").window(param);
+		},"json");
+	}
+} */
+	function deknotice() {
+	var trobjs = $("#notice").datagrid("getSelections");
+	if (trobjs.length == 0) {
+		$.messager.alert('警告', '请选择一条数据，进行删除');
+		return;
+	} else {
+		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+		    if (r){    
+		    	var values={ "notice_id":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+		    	$.post('notice/notciedelete',values,function(data2){
+		    		alert(data2); 
+		    	},"text");
+				 
+				$("#notice").datagrid('reload'); 
+		    }    
+		});
+	}
+}  
+
+
+	
+</script>
+  		<div id="mywindowFiles"></div>
+		<div id="mytoolsFiles">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addwindow()">添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'"  onclick="editnotice()">编辑</a> 
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"  onclick="deknotice()">删除</a>
+		</div>
+		
+  
+</body>
+</html>

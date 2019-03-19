@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>职位添加</title>
+</head>
+<body>
+<form action="addroles">
+<div align="center">
+<table>
+	<tr> 
+		<td>职位编号</td> 
+		<td><input type="text" name="positionId" id="positionId" disabled="disabled"/></td> 
+	</tr> 
+	<tr> 
+		<td>职位名称</td> 
+		<td><input type="text" name="positionName" id="positionName"/></td> 
+	</tr>
+	<tr> 
+		<td>职位负责人</td> 
+		<td><input type="text" name="positionPrincipal" id="positionPrincipal"/></td> 
+	</tr>
+</table>
+<input type="button" value="添加" onclick="positionsadd()" />
+</div>
+</form>
+
+<script type="text/javascript">
+	function positionsadd(){
+		var values = {
+			"positionId":$("#positionId").val(),
+			"positionName":$("#positionName").val(),
+			"positionPrincipal":$("#positionPrincipal").val()
+		};
+		$.post('addzhiwei.action',values,function(data){
+			alert(data); 
+		},'text');
+		setTimeout(function(){
+			$("#mywindow1").window('close');
+			$("#positions").datagrid('load'); 
+			},500)
+	}
+
+
+</script>
+</body>
+</html>

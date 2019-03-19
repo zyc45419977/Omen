@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>员工信息</title>
+		<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="js/easyui-lang-zh_CN.js" ></script>
+</head>
+<body>
+<table id="users2"></table>  
+	<script type="text/javascript"> 
+		$(function(){
+			var param = {
+				title:'员工表',
+				fitColumns:true,
+				columns:[[
+				{field : 'ck',checkbox : true,width : 50},
+				{field:'userId',title:'员工编号',width:80},
+				{field:'roleId',title:'员工编号',width:80},
+				{field:'positionId',title:'职位编号',width:80},
+				{field:'useraccount',title:'员工账号',width:80},
+				{field:'userpwd',title:'员工密码',width:80},
+				{field:'username',title:'员工名字',width:80},
+				{field:'usersex',title:'员工性别',width:80},
+				{field:'superior',title:'上级领导编号',width:80},
+				{field:'userdate',title:'入职时间',width:80},
+				{field:'usersal',title:'员工工资',width:80},
+				{field:'usercard',title:'员工身份证',width:80},
+				{field:'usertel',title:'员工电话',width:80},
+				{field:'useremail',title:'员工邮件',width:80},
+				{field:'useraddress',title:'员工地址',width:80}
+		     ]],
+		     url:'UserInfo.action',
+		 	pagination:true,
+			singleSelect:true,
+			rownumbers:true,
+			pageList:[5,10,15,20],
+			toolbar:'#mywindowusers'
+			}
+			$("#users2").datagrid(param);
+		});
+	</script>
+		<div id="mywindowusers"></div>
+</body>
+</html>

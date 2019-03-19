@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>请假表</title>
+<!-- 导入jquery的库文件-->
+<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
+<!--导入easyui的js库 -->
+<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<!--本地语言库 -->
+<script type="text/javascript" src="js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<!--主题css-->
+<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
+<!--图标css -->
+<link rel="stylesheet" href="js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="js/easyui/themes/IconExtension.css" />
+</head>
+<body>
+<table id="leave3"></table>
+<script type="text/javascript">
+$(function(){
+	var param = {
+			title:'请假记录',
+			width : 1200,
+			fitColumns:true,
+			columns:[[
+			{field : 'ck',checkbox : true,width : 50},
+			{field:'leaveId',title:'请假编号',width:80},
+			{field:'leavemanId',title:'请假人ID',width:80},
+			{field:'leaveContent',title:'请假内容',width:80},
+			{field:'startTime',title:'请假开始时间',width:80},
+			{field:'endTime',title:'请假结束时间 ',width:80},
+			{field:'leavereSults',title:'请假结果',width:80},
+			{field:'leadId',title:'上级ID',width:80}					
+	     ]],
+	    url:'leave.action',
+	 	pagination:true,
+		singleSelect:true,
+		rownumbers:true,
+		pageList:[5,10,15,20],
+		toolbar:'#mytoolsleave3'
+		}
+		$("#leave3").datagrid(param);
+	});
+
+ 	function dekfiles() {
+		var trobjs = $("#leave3").datagrid("getSelections");
+		if (trobjs.length == 0) {
+			$.messager.alert('警告', '请选择一条数据，进行删除');
+			return;
+		} else {
+			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+			    if (r){    
+			    	var values={ "leaveId":$("table input[type=checkbox]:checked").parent().parent().next().children().text()}
+			    	$.post('deleteleave.action',values,function(data2){
+			    		alert(data2); 
+			    	},"text");
+			    	setTimeout(function(){
+			    		$("#leave3").datagrid('reload'); 
+					},500)
+			    }    
+			});
+		}
+	} 
+	
+
+
+</script>
+  		<div id="mywindowleave3"></div>
+		<div id="mytoolsleave3">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="dekfiles()">删除记录</a>
+		</div>
+  
+</body>
+</html>
